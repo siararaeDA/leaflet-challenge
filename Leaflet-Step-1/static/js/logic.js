@@ -26,16 +26,19 @@ var myMap = L.map("mapid", {
     center: [
     37.09, -95.71
     ],
-    zoom: 4,
-    layers: [streetmap]
+    zoom: 5,
+    layers: [darkmap]
 });
+
+// Create a layer control
+L.control.layers(baseMaps).addTo(myMap);
   
 // URL for all earthquakes in the last day
-var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 // Function to return color
 function getColor(depth) {
-    return (depth * 5);
+    return (depth * 10);
 }
 
 // Function to return size
@@ -52,19 +55,19 @@ function getSize(magnitude) {
         return "#f7199e"
     } else {
         return "#eb495c";
-    };
+    }
 }
 
 // Get GeoJSON data and add styles to the map based on data
 d3.json(url).then(function(data) {
     console.log(data.features);
-    // Save data to variable for overlay layer
-    var earthquakes = L.geoJSON(data, {
+    
+    L.geoJSON(data, {
         pointToLayer: function(feature, latlng) {
             return L.circleMarker(latlng, {
                 fillColor: getColor(feature.geometry.coordinates[2]),
                 radius: getSize(feature.properties.mag),
-                weight: 0.3,
+                weight: 0.5,
                 opacity: 1,
                 color: "#000",
                 fillOpacity: 0.8
@@ -78,13 +81,6 @@ d3.json(url).then(function(data) {
         
     }).addTo(myMap);
 
-    // Create overlay object to hold our overlay layer
-    var overlayMaps = {
-        Earthquakes: earthquakes
-    };
+    // Add legend
 
-    // Create a layer control
-    L.control.layers(baseMaps, overlayMaps, {
-        collapsed: false
-    }).addTo(myMap);
 });
