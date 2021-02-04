@@ -37,24 +37,25 @@ L.control.layers(baseMaps).addTo(myMap);
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
 // Function to return color
-function getSize(depth) {
-    return (depth * 10);
+function getSize(magnitude) {
+    return (magnitude * 5);
 }
 
-// Function to return size
-function getColor(magnitude) {
-    if (magnitude < 1) {
-        return "#270394";
-    } else if (magnitude < 2) {
-        return "#5202ad";
-    } else if (magnitude < 3) {
-        return "#8a02c4";
-    } else if (magnitude < 4) {
-        return "#db02db";
-    } else if (magnitude < 5) {
-        return "#f7199e"
-    } else {
+function getColor(depth) {
+    if (depth < 10) {
         return "#eb495c";
+    } else if (depth < 30) {
+        return "#f7199e"
+    } else if (depth < 50) {
+        return "#db02db";
+    } else if (depth < 70) {
+        return "#8a02c4";
+    } else if (depth < 90) {
+        return "#5202ad";
+    } else if (depth < 110) {
+        return "#270394";
+    } else {
+        return "#0c1563";
     }
 }
 
@@ -84,6 +85,12 @@ d3.json(url).then(function(data) {
     }).addTo(myMap);
 
     // Add legend
+    // Source: https://codepen.io/haakseth/pen/KQbjdO
     var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function(myMap) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += "<h2>Legend"
+    }
 
 });
