@@ -41,33 +41,35 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
   // Get GeoJSON data and add styles to the map based on data
   d3.json(url).then(function(data) {
-    L.geoJson(data, {
-        style: function(feature) {
-            return {
-                color: "black",
-                fillOpacity: 0,
-                weight: 1.5
-            };
-        },
+    console.log(data.features);
+    // Save data to variable for overlay layer
+    var earthquakes = L.geoJson(data.features);
 
-        onEachFeature: function(feature, layer) {
-            layer.on({
-                mouseover: function(event) {
-                    layer = event.target;
-                    layer.setStyle({
-                        fillOpacity: 0.5
-                    });
-                },
+    // Add different map types
+    var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+        tileSize: 512,
+        maxZoom: 18,
+        zoomOffset: -1,
+        id: "mapbox/streets-v11",
+        accessToken: API_KEY
+    });
 
-                mouseout: function(event) {
-                    layer = event.target;
-                    layer.setStyle({
-                        fillOpacity: 0
-                    });
-                }
-            });
+    var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        maxZoom: 18,
+        id: "dark-v10",
+        accessToken: API_KEY
+    });
 
-            layer.bindPopup("<h4>Provider: " + feature.properties.Hauler + "</h4> <p>Collection Day: " + feature.properties.Coll_Day + "</p><p>Phone Number: " + feature.properties.Phone_Num + "</p>");
-        }
-    }).addTo(myMap);
+    // Define a baseMaps object to hold our base layers
+    var baseMaps = {
+        "Street Map": streetmap,
+        "Dark Map": darkmap
+    };
+
+    // Create overlay object to hold our overlay layer
+    var overlayMaps = {
+        Earthquakes: earthquakes
+    };
 });
