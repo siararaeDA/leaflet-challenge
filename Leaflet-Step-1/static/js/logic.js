@@ -34,15 +34,15 @@ var myMap = L.map("mapid", {
 L.control.layers(baseMaps).addTo(myMap);
   
 // URL for all earthquakes in the last day
-var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
 // Function to return color
-function getColor(depth) {
+function getSize(depth) {
     return (depth * 10);
 }
 
 // Function to return size
-function getSize(magnitude) {
+function getColor(magnitude) {
     if (magnitude < 1) {
         return "#270394";
     } else if (magnitude < 2) {
@@ -64,23 +64,26 @@ d3.json(url).then(function(data) {
     
     L.geoJSON(data, {
         pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
+            return L.circleMarker(latlng);
+        },
+        style: function(feature) {
+            return {
                 fillColor: getColor(feature.geometry.coordinates[2]),
                 radius: getSize(feature.properties.mag),
                 weight: 0.5,
                 opacity: 1,
                 color: "#000",
                 fillOpacity: 0.8
-            });
+            }
         },
         onEachFeature: function(feature, marker) {
             marker.bindPopup("<h2>" + feature.properties.place +
             "</h2><hr><h4>Magnitude: " + feature.properties.mag + "</h4><h4>Significance: " + 
             feature.properties.sig + "</h4><h4>Date: " + new Date(feature.properties.time) + "</h4>")
-        }
-        
+        } 
     }).addTo(myMap);
 
     // Add legend
+
 
 });
