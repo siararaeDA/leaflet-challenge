@@ -84,6 +84,6 @@ d3.json(url).then(function(data) {
     }).addTo(myMap);
 
     // Add legend
-
+    var legend = L.control({position: 'bottomright'});
 
 });
