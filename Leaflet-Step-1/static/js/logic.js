@@ -1,7 +1,7 @@
 // Creating map object
 var myMap = L.map("mapid", {
     center: [45.5128, -122.6796],
-    zoom: 8
+    zoom: 3
   });
 
 // Adding tile layer
@@ -18,8 +18,14 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
   // Function to return color
+  function getColor(depth) {
+
+  }
 
   // Function to return size
+  function getSize(magnitude) {
+      
+  }
 
   // Get GeoJSON data and add styles to the map based on data
   d3.json(url).then(function(data) {
