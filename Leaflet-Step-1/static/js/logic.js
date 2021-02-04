@@ -91,10 +91,10 @@ d3.json(url).then(function(data) {
         div.innerHTML += '<h4>Earthquake Depth</h4>';
         div.innerHTML += '<i style="background: #eb495c"></i><span>-10 - 10</span><br>';
         div.innerHTML += '<i style="background: #f7199e"></i><span>10 - 30</span><br>';
-        div.innerHTML += '<i style="background: #db02db"></i><span>-30 - 50</span><br>';
-        div.innerHTML += '<i style="background: #8a02c4"></i><span>-50 - 70</span><br>';
-        div.innerHTML += '<i style="background: #5202ad"></i><span>-70 - 90</span><br>';
-        div.innerHTML += '<i style="background: #270394"></i><span>-90+</span><br>';
+        div.innerHTML += '<i style="background: #db02db"></i><span>30 - 50</span><br>';
+        div.innerHTML += '<i style="background: #8a02c4"></i><span>50 - 70</span><br>';
+        div.innerHTML += '<i style="background: #5202ad"></i><span>70 - 90</span><br>';
+        div.innerHTML += '<i style="background: #270394"></i><span>90+</span><br>';
 
         return div;
     };
