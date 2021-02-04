@@ -19,12 +19,24 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
   // Function to return color
   function getColor(depth) {
-
+    return depth * 5;
   }
 
   // Function to return size
   function getSize(magnitude) {
-      
+    if (magnitude < 1) {
+        return "#270394";
+    } else if (magnitude < 2) {
+        return "#5202ad";
+    } else if (magnitude < 3) {
+        return "#8a02c4";
+    } else if (magnitude < 4) {
+        return "#db02db";
+    } else if (magnitude < 5) {
+        return "#f7199e"
+    } else {
+        return "#eb495c";
+    }
   }
 
   // Get GeoJSON data and add styles to the map based on data
