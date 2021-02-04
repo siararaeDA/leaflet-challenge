@@ -27,13 +27,7 @@
   d3.json(url).then(function(data) {
     console.log(data.features);
     // Save data to variable for overlay layer
-    earthquakes = L.geoJson(data.features, {
-        onEachFeature: function(feature, marker) {
-            marker.bindPopup("<h3>" + feature.properties.place +
-            "</h3><hr><p>Magnitude: " + feature.properties.mag + "</p><p>Significance: " +
-            feature.properties.sig + "</p>");
-        }
-    }).addTo(myMap);
+    var earthquakes = L.geoJSON(data.features);
 
     // Add different map types
     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -75,5 +69,14 @@
     // Create a layer control
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
+    }).addTo(myMap);
+
+    // Add earthquake-specific info to the map
+    L.geoJSON(data, {
+        onEachFeature: function(feature, marker) {
+            marker.bindPopup("<h2>" + feature.properties.place +
+            "</h2><hr><h4>Magnitude: " + feature.properties.mag + "</h4><h4>Significance: " + 
+            feature.properties.sig + "</h4><h4>Date: " + new Date(feature.properties.time) + "</h4>")
+        }
     }).addTo(myMap);
 });
